@@ -1,0 +1,39 @@
+name: .NET Build and Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: '3.1' # Replace with your desired version
+
+    - name: Build
+      run: dotnet build --configuration Release ./MyApp/MyApp.csproj
+
+    - name: Test
+      run: dotnet test ./MyApp/MyApp.csproj
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Deploy
+      run: |
+        # Add your deployment script or commands here
+        # For example, you might copy files to a server, deploy to a cloud provider, etc.
+        # This section depends on your specific deployment requirements
