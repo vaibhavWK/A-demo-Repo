@@ -1,0 +1,37 @@
+name: Variable Example
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      MY_VARIABLE: "Hello, GitHub Actions!"
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Display Variable
+      run: echo "My variable value is $MY_VARIABLE"
+
+    - name: Use Variable in a Script
+      run: |
+        echo "Using the variable in a script:"
+        echo $MY_VARIABLE
+
+    - name: Set Output Variable
+      id: set-output
+      run: echo "::set-output name=my_output::$MY_VARIABLE"
+
+  display-output:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Display Output Variable
+      run: echo "My output variable value is ${{ needs.build.outputs.my_output }}"
